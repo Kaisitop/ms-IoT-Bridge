@@ -112,13 +112,26 @@ class MqttConsumer:
         }
 
         try:
-            await self._publisher.create_evento(evento_dto)
+            created = await self._publisher.create_evento(evento_dto)
             await self._publisher.heartbeat(nodo.id)
+
+            if isinstance(created, dict) and created.get("id"):
+                await self._publisher.publish_audio_ready(
+                    {
+                        "eventoId": created["id"],
+                        "audioUrl": audio_path,
+                        "nodoId": nodo.id,
+                        "evento_id_origen": event.evento_id,
+                        "codigo_nodo": event.codigo_nodo,
+                    }
+                )
+
             logger.info(
-                "Evento procesado codigo=%s evento_id=%s severidad=%s",
+                "Evento procesado codigo=%s evento_id=%s severidad=%s db_id=%s",
                 event.codigo_nodo,
                 event.evento_id,
                 severidad,
+                created.get("id") if isinstance(created, dict) else None,
             )
         except Exception as exc:
             logger.exception("Error publicando a NATS: %s", exc)

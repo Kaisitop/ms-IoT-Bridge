@@ -100,16 +100,9 @@ cd "C:\Program Files (x86)\Mosquitto"
 
 Si `mosquitto_pub` ya está en tu PATH, puedes omitir el `cd`.
 
-Luego verifica:
+5. Verifica en Postman: `GET http://localhost:3000/api/eventos` — el evento debe pasar de `subtipo: otro` a `disparo`/`grito` con `procesado: true`.
 
-```sql
-SELECT id, tipo, subtipo, nodo_id, severidad, fuente, created_at
-FROM app.eventos
-ORDER BY created_at DESC
-LIMIT 5;
-```
-
-## Reglas fase 1 (sin ms-ia)
+## Reglas fase 1 (sin ms-ia en bridge)
 
 - `subtipo`: `otro`
 - `fuente`: `app_movil`

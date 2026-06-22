@@ -43,6 +43,15 @@ class EventPublisher:
         )
         return await self._request("eventos.create", evento_dto)
 
+    async def publish_audio_ready(self, payload: dict) -> None:
+        message = json.dumps(payload).encode("utf-8")
+        await self._nats.publish("eventos.audio.ready", message)
+        logger.info(
+            "Publicado eventos.audio.ready eventoId=%s audioUrl=%s",
+            payload.get("eventoId"),
+            payload.get("audioUrl"),
+        )
+
     async def heartbeat(self, nodo_id: str) -> dict | list | str | None:
         logger.debug("Publicando nodos.heartbeat nodoId=%s", nodo_id)
         return await self._request("nodos.heartbeat", nodo_id)
