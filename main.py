@@ -45,8 +45,8 @@ async def lifespan(app: FastAPI):
     await db_pool.open()
     logger.info("PostgreSQL conectado")
 
-    await nats_client.connect(settings.nats_servers)
-    logger.info("NATS conectado: %s", settings.nats_servers)
+    await nats_client.connect(settings.nats_service)
+    logger.info("NATS conectado: %s", settings.nats_service)
 
     loop = asyncio.get_running_loop()
     mqtt_consumer = MqttConsumer(db_pool, nats_client, on_status_change=_set_mqtt_status)

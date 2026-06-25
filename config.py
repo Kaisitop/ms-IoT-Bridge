@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     mqtt_topic: str = "centinela/evento"
     mqtt_client_id: str = "centinela-iot-bridge"
 
-    nats_servers: str = "nats://localhost:4222"
+    nats_service: str = "nats://localhost:4222"
 
     database_url: str = "postgresql://postgres:123@localhost:5432/coreDB"
 
